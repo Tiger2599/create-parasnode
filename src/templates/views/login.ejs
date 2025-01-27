@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/assets/logo/favicon.svg" />
+
+    <title>Login</title>
+    <%- include('components/stylesheet')%>
+
+</head>
+
+<body class="dark">
+    <main class="fixed-layout justify-content-center align-items-center">
+        <div class="outer_card login_card">
+            <div class="main_card">
+                <div class="mb-5">
+                    <img src="/assets/logo/logo.svg" alt="omnis" />
+                </div>
+                <div class="field mb-3">
+                    <label class="label">Admin Name</label>
+                    <input type="text" class="input" placeholder="Enter Admin name" id="userName"
+                        onkeyup="hideErr(this)" />
+                    <div class="d-flex gap-2 error d-none">
+                        <img src="/assets/icon_svg/error.svg" alt="ring" />
+                        <span>input_error</span>
+                    </div>
+                </div>
+                <div class="field mb-4">
+                    <label class="label">Password</label>
+                    <input type="password" class="input" placeholder="Enter Password" id="password"
+                        onkeyup="hideErr(this)" />
+                    <div class="d-flex gap-2 error d-none">
+                        <img src="/assets/icon_svg/error.svg" alt="ring" />
+                        <span>input_error</span>
+                    </div>
+                </div>
+                <button class="sec_btn" id="btn_login">Login</button>
+                <button class="sec_btn" id="passkey_login">Login Using Passkey</button>
+
+                <div class="d-flex gap-2 error d-none">
+                    <img src="/assets/icon_svg/error.svg" alt="ring" />
+                    <span>input_error</span>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <%- include('components/scriptsheet')%>
+    <script>
+        $("#btn_login").click(async function () {
+            let btnText = this.innerHTML;
+            setBtnLoader(this);
+
+            let userName = $("#userName").val();
+            let password = $("#password").val();
+            let {ip, os, browserName} = await getosinfo()
+
+            let { status, msg, data, errors } = await request("/login", "POST", { userName, password, ip, os, browserName })
+            if (status !== "Success") {
+                setBtnLoader(this, btnText);
+                return await errMsgShow(status, errors, this.getAttribute('id'));
+            }
+
+            setBtnLoader(this, btnText);
+            setTimeout(()=>window.location.href = data[0].renderPage,500)
+        })
+    </script>
+    <script src="https://unpkg.com/@simplewebauthn/browser/dist/bundle/index.es5.umd.min.js"></script>
+    <script>
+        const { startAuthentication } = SimpleWebAuthnBrowser;
+        $("#passkey_login").click(async function () {
+            try{
+                let btnText = this.innerHTML;
+                setBtnLoader(this)
+
+                let authenticationOptions = await request("/generate-login-options", "POST", { userName: $("#userName").val() })            
+                if (authenticationOptions.status !== "Success") {
+                    setBtnLoader(this, btnText);
+                    return await errMsgShow(authenticationOptions.status, authenticationOptions.errors, this.getAttribute('id'));
+                }
+
+                const assertionResponse = await SimpleWebAuthnBrowser.startAuthentication({optionsJSON: authenticationOptions.data});
+                let verification = await request("/verify-authentication", "POST", { assertionResponse:{...assertionResponse}, userName: $("#userName").val() })
+                if (verification.status !== "Success") {
+                    setBtnLoader(this, btnText);
+                    return await errMsgShow(verification.status, verification.errors, this.getAttribute('id'));
+                }
+
+                setBtnLoader(this, btnText);
+                setTimeout(()=>window.location.href = verification.data[0].renderPage,500)
+            }catch(error){
+                console.log("🚀 ~ blockUser ~ error:", error)
+                await errMsgShowLable('Err',"An error has occurred. Please try again later.")
+                await sendErr(`project :- Admin_omnes \npage :- passkey_login \nmethod :- passkey_login \nuser :- '${id}' \nmsg :- ${error.message}`)
+            }
+        })
+    </script>
+</body>
+
+</html>
