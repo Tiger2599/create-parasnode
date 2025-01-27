@@ -39,11 +39,11 @@ function askQuestion(query) {
 }
 
 async function main() {
-  console.log("Welcome to ParasNode project creator!");
+  console.log("Welcome to node project creator!");
 
   // Ask for the project name
-  const projectName = await askQuestion("What is your project name? (default: parasnode-app): ");
-  const projectDir = path.join(process.cwd(), projectName || "parasnode-app");
+  const projectName = await askQuestion("What is your project name? (default: node-app): ");
+  const projectDir = path.join(process.cwd(), projectName || "node-app");
 
   // Create the project folder
   if (fs.existsSync(projectDir)) {
@@ -53,7 +53,7 @@ async function main() {
   fs.mkdirSync(projectDir);
 
   // Copy the template files
-  console.log("Creating a new ParasNode project...");
+  console.log("Creating a new node project...");
   copyTemplateFiles(TEMPLATE_DIR, projectDir);
 
   // Install dependencies
@@ -62,7 +62,8 @@ async function main() {
 
   console.log("Project created successfully!");
   console.log(`\nRun the following commands to get started:`);
-  console.log(`\n  cd ${projectName || "parasnode-app"}`);
+  console.log(`\n  cd ${projectName || "node-app"}`);
+  console.log("  npm install");
   console.log("  npm start");
 }
 

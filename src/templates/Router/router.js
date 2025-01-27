@@ -9,11 +9,11 @@ const { checkRequest } = require('../Middleware/checkRequest');
 router.route('/')
 	.get(Controller.login);
 
-router.route('/login')
-	.post(checkRequest, appLimiter, checkBlockedIps, [
-		body('userName').notEmpty().withMessage('Please enter a User Name.').custom(noHtmlTags),
-		body('password').notEmpty().withMessage('Please enter a Password.').custom(noHtmlTags)
-	], Controller.handleLogin);
+// router.route('/login')
+// 	.post(checkRequest, appLimiter, checkBlockedIps, [
+// 		body('userName').notEmpty().withMessage('Please enter a User Name.').custom(noHtmlTags),
+// 		body('password').notEmpty().withMessage('Please enter a Password.').custom(noHtmlTags)
+// 	], Controller.handleLogin);
 
 // router.route('/login-verification')
 // 	.get(Controller.loginverification)
