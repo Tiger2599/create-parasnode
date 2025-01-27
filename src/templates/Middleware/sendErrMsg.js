@@ -5,7 +5,7 @@ exports.errSend = async (msg) => {
 		process.env.ERR_BOTURL,
 		{ 
 			msg, 
-			project:"Admin_omnes" 
+			project:"" 
 		}
 	);
 }

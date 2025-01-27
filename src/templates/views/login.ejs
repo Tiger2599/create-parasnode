@@ -16,7 +16,7 @@
         <div class="outer_card login_card">
             <div class="main_card">
                 <div class="mb-5">
-                    <img src="/assets/logo/logo.svg" alt="omnis" />
+                    <img src="/assets/logo/logo.svg" alt="" />
                 </div>
                 <div class="field mb-3">
                     <label class="label">Admin Name</label>
@@ -93,7 +93,7 @@
             }catch(error){
                 console.log("🚀 ~ blockUser ~ error:", error)
                 await errMsgShowLable('Err',"An error has occurred. Please try again later.")
-                await sendErr(`project :- Admin_omnes \npage :- passkey_login \nmethod :- passkey_login \nuser :- '${id}' \nmsg :- ${error.message}`)
+                await sendErr(`project :- "" \npage :- passkey_login \nmethod :- passkey_login \nuser :- '${id}' \nmsg :- ${error.message}`)
             }
         })
     </script>
