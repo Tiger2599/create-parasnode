@@ -1,6 +1,6 @@
 {
 	"name": "create-parasnode",
-	"version": "1.1.0",
+	"version": "2.0.2",
 	"description": "A CLI tool to create a ParasNode project",
 	"main": "src/cli.js",
 	"bin": {
@@ -9,7 +9,7 @@
 	"scripts": {
 	  "start": "node src/cli.js"
 	},
-	"keywords": ["cli", "nodejs", "project-generator"],
+	"keywords": ["cli", "nodejs", "project-generator", "boilerplate"],
 	"author": "Your Name",
 	"license": "MIT",
 	"dependencies": {}
