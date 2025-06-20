@@ -1,6 +1,6 @@
 {
 	"name": "create-parasnode",
-	"version": "2.0.2",
+	"version": "2.0.3",
 	"description": "A CLI tool to create a ParasNode project",
 	"main": "src/cli.js",
 	"bin": {
